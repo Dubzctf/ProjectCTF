@@ -1,0 +1,61 @@
+version: '2.2'
+
+services:
+    db:
+      image: mysql:5.7.13
+      volumes:
+          - ./mysql:/var/lib/mysql
+      ports:
+          - "3306:3306"
+      environment:
+          MYSQL_TCP_PORT: 3306
+          MYSQL_ROOT_PASSWORD: P8vg39vD
+          MYSQL_USER: dev
+          MYSQL_PASSWORD: dev
+          MYSQL_DATABASE: ctf2018
+      restart: always
+      networks:
+          internal:
+          shared:
+              ipv4_address: 172.55.0.5
+    web:
+      build: .
+      image : php:7.2.2-apache
+      ports:
+          - "80:80"
+      volumes:
+          - ./php/www/:/var/www/html/
+      links:
+         - db
+      depends_on:
+          - db
+      stdin_open: true
+      tty: true
+      networks:
+            internal:
+            shared:
+                ipv4_address: 172.55.0.2
+
+    myadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - "8080:80"
+        links:
+            - db:db
+        networks:
+            internal:
+            shared:
+                ipv4_address: 172.55.0.9
+networks:
+  internal:
+    driver_opts:
+      internal: "true"
+    driver: bridge
+  shared:
+    driver_opts:
+      enable_ipv6: "true"
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.55.0.0/16
+         gateway: 172.55.0.1
