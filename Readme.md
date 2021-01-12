@@ -20,4 +20,3 @@ After you can go in home page with this address :  172.55.0.2/home_out.php
 
 Now, you can see report board of each time with ranking. 
 
-The group is composed of Yassir Achchoubi, Ludovic Dijoux, Simon Chatelain, Virgile Castelot and Rémi Dubois. 
